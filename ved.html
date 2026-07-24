@@ -1,0 +1,1272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vedant — Flutter & Web Developer</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/devicon.min.css">
+    
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --deep-blue: #1E73BE;
+            --bright-blue: #2EA3F2;
+            --sky-blue: #3BB4E5;
+            --light-cyan: #5BC0EB;
+            --orange: #F39C12;
+            --soft-yellow: #F5C542;
+            --purple: #6C63FF;
+            --dark-purple: #4B3F72;
+            --dark-navy: #1F2D3D;
+            --charcoal: #2C3E50;
+            --text-medium: #4A5568;
+            --text-light: #718096;
+            --white: #FFFFFF;
+            --bg-main: #F4F6F8;
+            --gradient-primary: linear-gradient(135deg, #1E73BE, #2EA3F2, #5BC0EB);
+            --gradient-blue: linear-gradient(135deg, #1E73BE, #3BB4E5);
+            --gradient-accent: linear-gradient(135deg, #F39C12, #F5C542);
+            --gradient-purple: linear-gradient(135deg, #4B3F72, #6C63FF);
+            --gradient-hero: linear-gradient(135deg, #1F2D3D, #1E73BE, #2EA3F2);
+            --gradient-glow: linear-gradient(135deg, rgba(30,115,190,0.08), rgba(91,192,235,0.08));
+            --shadow-sm: 0 4px 16px rgba(30,115,190,0.10);
+            --shadow-md: 0 8px 32px rgba(30,115,190,0.14);
+            --shadow-lg: 0 16px 48px rgba(30,115,190,0.18);
+            --shadow-glow: 0 0 40px rgba(46,163,242,0.2);
+            --radius-sm: 12px;
+            --radius-md: 20px;
+            --radius-lg: 30px;
+        }
+
+        html { scroll-behavior: smooth; }
+        body { font-family: 'Inter', sans-serif; background: var(--bg-main); color: var(--dark-navy); line-height: 1.7; overflow-x: hidden; }
+        h1,h2,h3,h4,h5,h6 { font-family: 'Space Grotesk', sans-serif; }
+        a { text-decoration: none; color: inherit; }
+        ul { list-style: none; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 30px; }
+
+        /* BG */
+        .bg-orbs { position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden; }
+        .orb { position:absolute;border-radius:50%;filter:blur(90px);opacity:0.16;animation:floatOrb 22s infinite ease-in-out; }
+        .orb-1{width:650px;height:650px;background:var(--bright-blue);top:-200px;right:-180px;}
+        .orb-2{width:500px;height:500px;background:var(--purple);bottom:-150px;left:-120px;animation-delay:-8s;}
+        .orb-3{width:420px;height:420px;background:var(--sky-blue);top:45%;left:48%;animation-delay:-15s;}
+        .orb-4{width:360px;height:360px;background:var(--orange);top:25%;right:8%;animation-delay:-5s;opacity:0.09;}
+        @keyframes floatOrb{0%,100%{transform:translate(0,0) scale(1);}25%{transform:translate(70px,-55px) scale(1.08);}50%{transform:translate(-35px,70px) scale(0.92);}75%{transform:translate(55px,35px) scale(1.04);}}
+        .grid-pattern{position:fixed;inset:0;background-image:linear-gradient(rgba(30,115,190,0.035) 1px,transparent 1px),linear-gradient(90deg,rgba(30,115,190,0.035) 1px,transparent 1px);background-size:60px 60px;pointer-events:none;z-index:0;}
+
+        /* CURSOR */
+        .custom-cursor{width:22px;height:22px;border:2px solid var(--bright-blue);border-radius:50%;position:fixed;pointer-events:none;z-index:10000;transition:all 0.12s ease;}
+        .cursor-dot{width:6px;height:6px;background:var(--orange);border-radius:50%;position:fixed;pointer-events:none;z-index:10001;transition:all 0.06s ease;}
+
+        /* NAVBAR */
+        .navbar{position:fixed;top:20px;left:50%;transform:translateX(-50%);z-index:1000;width:calc(100% - 60px);max-width:1200px;padding:13px 26px;background:rgba(255,255,255,0.82);backdrop-filter:blur(24px) saturate(180%);border:1px solid rgba(30,115,190,0.12);border-radius:100px;transition:all 0.4s cubic-bezier(0.4,0,0.2,1);box-shadow:var(--shadow-sm);}
+        .navbar.scrolled{background:rgba(255,255,255,0.96);box-shadow:var(--shadow-md);top:10px;}
+        .navbar .container{display:flex;justify-content:space-between;align-items:center;padding:0;}
+        .logo{font-family:'Space Grotesk',sans-serif;font-size:1.5rem;font-weight:700;background:var(--gradient-primary);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;display:flex;align-items:center;gap:5px;}
+        .logo-dot{display:inline-block;width:9px;height:9px;background:var(--orange);border-radius:50%;animation:pulse 2s infinite;flex-shrink:0;}
+        @keyframes pulse{0%,100%{transform:scale(1);}50%{transform:scale(1.6);opacity:0.7;}}
+        .nav-links{display:flex;gap:3px;align-items:center;}
+        .nav-links a{padding:8px 16px;border-radius:50px;font-weight:500;font-size:0.87rem;color:var(--text-medium);transition:all 0.3s;}
+        .nav-links a:hover{color:var(--deep-blue);background:rgba(30,115,190,0.07);}
+        .nav-links a.active{color:#fff;background:var(--gradient-blue);}
+        .nav-cta{padding:10px 22px!important;background:var(--gradient-primary)!important;color:#fff!important;font-weight:600!important;border-radius:50px!important;box-shadow:0 4px 15px rgba(30,115,190,0.3);}
+        .nav-cta:hover{transform:translateY(-2px)!important;box-shadow:0 8px 25px rgba(30,115,190,0.4)!important;}
+        .hamburger{display:none;flex-direction:column;cursor:pointer;gap:6px;padding:5px;}
+        .hamburger span{width:26px;height:2.5px;background:var(--deep-blue);border-radius:10px;transition:all 0.3s;}
+        .hamburger.active span:nth-child(1){transform:rotate(45deg) translate(6px,6px);}
+        .hamburger.active span:nth-child(2){opacity:0;}
+        .hamburger.active span:nth-child(3){transform:rotate(-45deg) translate(6px,-6px);}
+
+        /* SECTIONS */
+        .section{padding:110px 0;position:relative;z-index:1;}
+        .section-header{text-align:center;margin-bottom:65px;}
+        .section-badge{display:inline-flex;align-items:center;gap:8px;padding:7px 18px;background:rgba(30,115,190,0.07);border:1px solid rgba(30,115,190,0.15);border-radius:50px;font-size:0.82rem;font-weight:600;color:var(--deep-blue);margin-bottom:16px;text-transform:uppercase;letter-spacing:1.5px;}
+        .badge-dot{width:6px;height:6px;background:var(--bright-blue);border-radius:50%;animation:pulse 2s infinite;}
+        .section-header h2{font-size:2.9rem;font-weight:700;color:var(--dark-navy);letter-spacing:-1px;line-height:1.2;margin-bottom:14px;}
+        .highlight{background:var(--gradient-primary);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+        .highlight-orange{background:var(--gradient-accent);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+        .section-header p{color:var(--text-light);font-size:1.08rem;max-width:530px;margin:0 auto;}
+
+        /* GLASS CARD */
+        .glass-card{background:rgba(255,255,255,0.78);backdrop-filter:blur(20px) saturate(180%);border:1px solid rgba(30,115,190,0.10);border-radius:var(--radius-md);transition:all 0.4s cubic-bezier(0.4,0,0.2,1);box-shadow:var(--shadow-sm);}
+        .glass-card:hover{transform:translateY(-6px);box-shadow:var(--shadow-lg),var(--shadow-glow);border-color:rgba(46,163,242,0.20);}
+
+        /* BTN */
+        .btn{padding:14px 32px;border-radius:50px;font-weight:600;font-size:0.96rem;cursor:pointer;transition:all 0.4s cubic-bezier(0.4,0,0.2,1);border:none;display:inline-flex;align-items:center;gap:10px;font-family:'Inter',sans-serif;position:relative;overflow:hidden;}
+        .btn-primary{background:var(--gradient-primary);color:#fff;box-shadow:0 8px 28px rgba(30,115,190,0.32);}
+        .btn-primary:hover{transform:translateY(-3px);box-shadow:0 14px 38px rgba(30,115,190,0.44);}
+        .btn-primary::before{content:'';position:absolute;top:0;left:-100%;width:100%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.18),transparent);transition:left 0.5s;}
+        .btn-primary:hover::before{left:100%;}
+        .btn-secondary{background:rgba(255,255,255,0.88);color:var(--dark-navy);border:1.5px solid rgba(30,115,190,0.18);}
+        .btn-secondary:hover{transform:translateY(-3px);background:#fff;box-shadow:var(--shadow-md);border-color:var(--bright-blue);color:var(--deep-blue);}
+
+        /* HERO */
+        .hero{min-height:100vh;display:flex;align-items:center;position:relative;z-index:1;padding-top:100px;overflow:hidden;}
+        .hero .container{display:grid;grid-template-columns:1fr 1fr;gap:50px;align-items:center;position:relative;z-index:1;}
+        .hero-status{display:inline-flex;align-items:center;gap:10px;padding:8px 18px;background:rgba(255,255,255,0.88);backdrop-filter:blur(12px);border:1px solid rgba(30,115,190,0.14);border-radius:50px;margin-bottom:26px;font-size:0.86rem;color:var(--text-medium);animation:fadeInUp 0.8s ease both;box-shadow:var(--shadow-sm);}
+        .status-dot{width:10px;height:10px;background:#22C55E;border-radius:50%;position:relative;}
+        .status-dot::after{content:'';position:absolute;inset:-3px;border-radius:50%;border:2px solid #22C55E;animation:ping 1.5s infinite;}
+        @keyframes ping{0%{transform:scale(1);opacity:0.8;}100%{transform:scale(2.2);opacity:0;}}
+        .hero-content h1{font-size:3.8rem;font-weight:700;line-height:1.08;letter-spacing:-2px;margin-bottom:12px;animation:fadeInUp 0.8s ease 0.1s both;color:var(--dark-navy);}
+        .gradient-text{background:var(--gradient-primary);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+        .orange-text{background:var(--gradient-accent);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+        .hero .subtitle{font-family:'Space Grotesk',sans-serif;font-size:1.25rem;color:var(--text-light);margin-bottom:16px;animation:fadeInUp 0.8s ease 0.2s both;}
+        .typed-text{color:var(--bright-blue);font-weight:600;border-right:2px solid var(--bright-blue);padding-right:3px;animation:blink 1s infinite;}
+        @keyframes blink{0%,100%{border-color:var(--bright-blue);}50%{border-color:transparent;}}
+        .hero .tagline{font-size:0.97rem;color:var(--deep-blue);max-width:450px;margin-bottom:20px;animation:fadeInUp 0.8s ease 0.28s both;font-style:italic;font-weight:500;border-left:3px solid var(--orange);padding:8px 15px;background:rgba(30,115,190,0.04);border-radius:0 8px 8px 0;}
+        .hero p{font-size:1rem;color:var(--text-light);max-width:460px;margin-bottom:34px;animation:fadeInUp 0.8s ease 0.33s both;}
+        .hero-buttons{display:flex;gap:14px;flex-wrap:wrap;animation:fadeInUp 0.8s ease 0.4s both;}
+        .hero-stats{display:flex;gap:32px;margin-top:42px;animation:fadeInUp 0.8s ease 0.5s both;}
+        .stat-item{text-align:center;}
+        .stat-number{font-family:'Space Grotesk',sans-serif;font-size:1.9rem;font-weight:700;background:var(--gradient-primary);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;display:block;}
+        .stat-label{font-size:0.78rem;color:var(--text-light);font-weight:500;}
+        .stat-divider{width:1px;height:42px;background:rgba(30,115,190,0.14);align-self:center;}
+        @keyframes fadeInUp{from{opacity:0;transform:translateY(30px);}to{opacity:1;transform:translateY(0);}}
+
+        /* HERO VISUAL */
+        .hero-visual{position:relative;display:flex;justify-content:center;align-items:center;animation:fadeInUp 0.8s ease 0.3s both;}
+        .hero-lottie-wrap{position:relative;width:440px;height:440px;display:flex;justify-content:center;align-items:center;}
+        .hero-ring{position:absolute;inset:0;border-radius:50%;border:2px dashed rgba(30,115,190,0.18);animation:rotateRing 32s linear infinite;}
+        .hero-ring:nth-child(2){inset:30px;animation-direction:reverse;animation-duration:22s;border-color:rgba(108,99,255,0.14);}
+        .hero-ring:nth-child(3){inset:60px;animation-duration:18s;border-color:rgba(243,156,18,0.10);}
+        @keyframes rotateRing{from{transform:rotate(0deg);}to{transform:rotate(360deg);}}
+        .hero-lottie-main{width:320px;height:320px;position:relative;z-index:3;filter:drop-shadow(0 20px 50px rgba(30,115,190,0.25));}
+        .floating-badge{position:absolute;padding:9px 14px;background:rgba(255,255,255,0.96);backdrop-filter:blur(15px);border:1px solid rgba(30,115,190,0.12);border-radius:var(--radius-sm);font-size:0.78rem;font-weight:600;color:var(--dark-navy);box-shadow:var(--shadow-md);animation:floatBadge 6s ease-in-out infinite;display:flex;align-items:center;gap:8px;white-space:nowrap;z-index:10;}
+        .floating-badge i{font-size:1.3rem;}
+        .floating-badge:nth-child(5){top:20px;right:-15px;animation-delay:0s;}
+        .floating-badge:nth-child(6){bottom:70px;left:-35px;animation-delay:-2s;}
+        .floating-badge:nth-child(7){bottom:0;right:20px;animation-delay:-4s;}
+        @keyframes floatBadge{0%,100%{transform:translateY(0);}50%{transform:translateY(-12px);}}
+
+        /* MARQUEE */
+        .marquee-section{padding:28px 0;overflow:hidden;background:rgba(30,115,190,0.03);border-top:1px solid rgba(30,115,190,0.08);border-bottom:1px solid rgba(30,115,190,0.08);}
+        .marquee-track{display:flex;animation:marquee 35s linear infinite;width:max-content;}
+        .marquee-item{display:flex;align-items:center;gap:10px;padding:0 28px;white-space:nowrap;font-family:'Space Grotesk',sans-serif;font-size:1rem;font-weight:600;color:var(--text-light);}
+        .marquee-item i{font-size:1.4rem;}
+        .marquee-dot{width:5px;height:5px;background:var(--bright-blue);border-radius:50%;opacity:0.4;margin-left:10px;}
+        @keyframes marquee{from{transform:translateX(0);}to{transform:translateX(-50%);}}
+
+        /* ABOUT */
+        .about-grid{display:grid;grid-template-columns:1fr 1.2fr;gap:60px;align-items:center;}
+        .about-visual{position:relative;}
+        .about-3d-card{width:100%;height:460px;border-radius:var(--radius-lg);background:var(--gradient-hero);display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;border:2px solid rgba(46,163,242,0.18);box-shadow:var(--shadow-lg);transform-style:preserve-3d;transition:transform 0.1s ease;cursor:default;}
+        .about-3d-card::before{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:conic-gradient(from 0deg,transparent,rgba(46,163,242,0.06),transparent,rgba(108,99,255,0.05),transparent);animation:rotateRing 20s linear infinite;}
+        .about-lottie-main{width:280px;height:280px;position:relative;z-index:2;}
+        .about-float-card{position:absolute;bottom:-25px;right:-25px;padding:20px 24px;background:#fff;border-radius:var(--radius-md);box-shadow:var(--shadow-lg);border:1px solid rgba(30,115,190,0.08);}
+        .about-float-card .big-number{font-family:'Space Grotesk',sans-serif;font-size:2.5rem;font-weight:700;background:var(--gradient-primary);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1;}
+        .about-float-card span{font-size:0.82rem;color:var(--text-light);font-weight:500;display:block;margin-top:3px;}
+        .about-float-card-2{position:absolute;top:25px;left:-25px;padding:14px 18px;background:#fff;border-radius:var(--radius-md);box-shadow:var(--shadow-md);border:1px solid rgba(243,156,18,0.14);display:flex;align-items:center;gap:11px;}
+        .float-text strong{display:block;font-size:0.86rem;color:var(--dark-navy);}
+        .float-text span{font-size:0.76rem;color:var(--text-light);}
+        .about-content h3{font-size:1.85rem;margin-bottom:16px;color:var(--dark-navy);letter-spacing:-0.5px;}
+        .about-content p{color:var(--text-light);margin-bottom:13px;font-size:0.98rem;}
+        .about-features{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:24px 0 28px;}
+        .feature-item{display:flex;align-items:center;gap:12px;padding:12px 15px;background:rgba(30,115,190,0.04);border-radius:var(--radius-sm);border:1px solid rgba(30,115,190,0.08);transition:all 0.3s;cursor:default;}
+        .feature-item:hover{background:rgba(30,115,190,0.09);transform:translateX(4px);}
+        .feat-icon{width:38px;height:38px;border-radius:10px;background:rgba(30,115,190,0.06);border:1px solid rgba(30,115,190,0.10);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+        .feat-icon i{font-size:1.55rem;line-height:1;}
+        .feat-icon img{width:22px;height:22px;object-fit:contain;}
+        .feature-item span{font-weight:500;font-size:0.88rem;color:var(--dark-navy);}
+
+        /* SERVICES */
+        .services-section{background:linear-gradient(180deg,rgba(230,236,241,0.35),var(--bg-main));}
+        .services-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;}
+        .service-card{padding:34px 24px;text-align:center;position:relative;overflow:hidden;cursor:default;}
+        .service-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--gradient-primary);transform:scaleX(0);transition:transform 0.4s ease;transform-origin:left;}
+        .service-card:hover::before{transform:scaleX(1);}
+        .service-icon-wrap{width:80px;height:80px;margin:0 auto 18px;border-radius:var(--radius-md);background:rgba(30,115,190,0.06);border:1px solid rgba(30,115,190,0.08);display:flex;align-items:center;justify-content:center;transition:all 0.4s;}
+        .service-icon-wrap i{font-size:2.5rem;transition:all 0.4s;}
+        .service-icon-wrap img{width:42px;height:42px;object-fit:contain;transition:all 0.4s;}
+        .service-card:hover .service-icon-wrap{background:var(--gradient-primary);border-color:transparent;transform:scale(1.08) rotate(3deg);box-shadow:0 8px 24px rgba(30,115,190,0.25);}
+        .service-card:hover .service-icon-wrap i{filter:brightness(0) invert(1);}
+        .service-card:hover .service-icon-wrap img{filter:brightness(0) invert(1);}
+        .service-card h3{font-size:1.12rem;margin-bottom:9px;color:var(--dark-navy);}
+        .service-card p{color:var(--text-light);font-size:0.88rem;line-height:1.7;}
+        .service-number{position:absolute;top:10px;right:16px;font-family:'Space Grotesk',sans-serif;font-size:3rem;font-weight:700;color:rgba(30,115,190,0.04);line-height:1;}
+
+        /* SKILLS */
+        .skills-container{display:grid;grid-template-columns:1fr 1fr;gap:50px;}
+        .skills-visual{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+
+        /* Skill Category Grid */
+        .skill-categories{display:flex;flex-direction:column;gap:30px;margin-bottom:30px;}
+        .skill-category{padding:20px;}
+        .skill-category-title{font-size:1rem;font-weight:600;color:var(--dark-navy);margin-bottom:14px;display:flex;align-items:center;gap:8px;}
+        .category-icon{font-size:1.1rem;}
+        .skills-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;}
+
+        .skill-orb{border-radius:var(--radius-md);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;padding:20px 12px 28px;text-align:center;position:relative;overflow:hidden;cursor:default;transform-style:preserve-3d;transition:transform 0.3s ease,box-shadow 0.3s ease;aspect-ratio:1;}
+        .skill-orb:hover{transform:translateY(-6px) rotateX(8deg);}
+        .skill-tech-icon{width:52px;height:52px;display:flex;align-items:center;justify-content:center;position:relative;z-index:2;transition:transform 0.3s ease;}
+        .skill-orb:hover .skill-tech-icon{transform:scale(1.18) translateY(-2px);}
+        .skill-tech-icon i{font-size:2.6rem;}
+        .skill-tech-icon img{width:100%;height:100%;object-fit:contain;}
+        .skill-name{font-weight:600;font-size:0.78rem;color:var(--dark-navy);position:relative;z-index:2;}
+        .skill-pct{font-size:0.70rem;color:var(--bright-blue);font-weight:700;font-family:'Space Grotesk',sans-serif;position:relative;z-index:2;}
+        .skill-orb .progress-ring{position:absolute;bottom:7px;left:50%;transform:translateX(-50%);width:74%;height:3px;background:rgba(30,115,190,0.08);border-radius:10px;overflow:hidden;}
+        .skill-orb .progress-fill{height:100%;background:var(--gradient-primary);border-radius:10px;width:0;transition:width 1.5s ease;}
+        .skill-orb::before{content:'';position:absolute;inset:0;background:var(--gradient-glow);opacity:0;transition:opacity 0.3s;}
+        .skill-orb:hover::before{opacity:1;}
+        .skill-orb.flutter-orb:hover{box-shadow:0 18px 38px rgba(84,197,247,0.30);}
+        .skill-orb.dart-orb:hover{box-shadow:0 18px 38px rgba(0,180,171,0.28);}
+        .skill-orb.java-orb:hover{box-shadow:0 18px 38px rgba(234,67,53,0.24);}
+        .skill-orb.firebase-orb:hover{box-shadow:0 18px 38px rgba(255,202,40,0.30);}
+        .skill-orb.python-orb:hover{box-shadow:0 18px 38px rgba(55,118,171,0.28);}
+        .skill-orb.cpp-orb:hover{box-shadow:0 18px 38px rgba(0,89,157,0.26);}
+        .skill-orb.api-orb:hover{box-shadow:0 18px 38px rgba(30,115,190,0.28);}
+        .skill-orb.git-orb:hover{box-shadow:0 18px 38px rgba(240,80,50,0.26);}
+        .skill-orb.android-orb:hover{box-shadow:0 18px 38px rgba(61,220,132,0.28);}
+        .skill-orb.html-orb:hover{box-shadow:0 18px 38px rgba(227,76,38,0.28);}
+        .skill-orb.css-orb:hover{box-shadow:0 18px 38px rgba(38,77,228,0.28);}
+        .skill-orb.js-orb:hover{box-shadow:0 18px 38px rgba(247,223,30,0.30);}
+        .skill-orb.php-orb:hover{box-shadow:0 18px 38px rgba(119,123,180,0.28);}
+        .skill-orb.mysql-orb:hover{box-shadow:0 18px 38px rgba(0,117,143,0.28);}
+        .skills-info h3{font-size:1.8rem;margin-bottom:14px;color:var(--dark-navy);}
+        .skills-info p{color:var(--text-light);margin-bottom:24px;font-size:0.98rem;}
+        .skill-bar-item{margin-bottom:20px;}
+        .skill-bar-header{display:flex;justify-content:space-between;margin-bottom:8px;align-items:center;}
+        .skill-bar-label{display:flex;align-items:center;gap:10px;font-weight:500;font-size:0.90rem;color:var(--charcoal);}
+        .bar-icon{width:26px;height:26px;display:flex;align-items:center;justify-content:center;}
+        .bar-icon i{font-size:1.4rem;}
+        .bar-icon img{width:100%;height:100%;object-fit:contain;}
+        .skill-bar-header .percent{color:var(--deep-blue);font-weight:700;font-family:'Space Grotesk',sans-serif;font-size:0.92rem;}
+        .skill-bar-track{height:10px;background:rgba(30,115,190,0.07);border-radius:20px;overflow:hidden;}
+        .skill-bar-fill{height:100%;background:var(--gradient-primary);border-radius:20px;width:0;transition:width 1.5s cubic-bezier(0.4,0,0.2,1);position:relative;}
+        .skill-bar-fill::after{content:'';position:absolute;right:0;top:50%;transform:translateY(-50%);width:16px;height:16px;background:#fff;border:3px solid var(--bright-blue);border-radius:50%;box-shadow:0 2px 8px rgba(30,115,190,0.28);}
+        .skill-bar-fill.flutter-bar{background:linear-gradient(90deg,#54C5F8,#01579B);}
+        .skill-bar-fill.dart-bar{background:linear-gradient(90deg,#00B4AB,#0175C2);}
+        .skill-bar-fill.java-bar{background:linear-gradient(90deg,#EA4335,#F9AB00);}
+        .skill-bar-fill.firebase-bar{background:linear-gradient(90deg,#FFCA28,#FF6F00);}
+        .skill-bar-fill.api-bar{background:linear-gradient(90deg,#1E73BE,#5BC0EB);}
+        .skill-bar-fill.cpp-bar{background:linear-gradient(90deg,#00599D,#004482);}
+        .skill-bar-fill.python-bar{background:linear-gradient(90deg,#3776AB,#FFD43B);}
+        .skill-bar-fill.web-bar{background:linear-gradient(90deg,#E34F26,#264de4,#F7DF1E);}
+
+        /* PROJECTS */
+        .projects-section{background:linear-gradient(180deg,var(--bg-main),rgba(230,236,241,0.35),var(--bg-main));}
+        .project-filters{display:flex;justify-content:center;gap:11px;margin-bottom:46px;flex-wrap:wrap;}
+        .filter-btn{padding:9px 22px;border-radius:50px;border:1.5px solid rgba(30,115,190,0.13);background:rgba(255,255,255,0.55);color:var(--text-medium);cursor:pointer;transition:all 0.3s;font-size:0.86rem;font-weight:500;font-family:'Inter',sans-serif;backdrop-filter:blur(10px);}
+        .filter-btn.active,.filter-btn:hover{background:var(--gradient-primary);color:#fff;border-color:transparent;box-shadow:0 4px 18px rgba(30,115,190,0.26);}
+        .projects-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:26px;}
+        .project-card{overflow:hidden;cursor:pointer;display:grid;grid-template-columns:200px 1fr;min-height:210px;transition:all 0.4s cubic-bezier(0.4,0,0.2,1);}
+
+        .project-visual{position:relative;overflow:hidden;border-radius:var(--radius-md) 0 0 var(--radius-md);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;padding:18px;}
+        .proj-illustration{width:130px;height:130px;position:relative;z-index:2;transition:transform 0.5s cubic-bezier(0.34,1.56,0.64,1);filter:drop-shadow(0 10px 20px rgba(0,0,0,0.25));}
+        .project-card:hover .proj-illustration{transform:scale(1.12) translateY(-6px) rotate(-3deg);}
+        .proj-label{font-family:'Space Grotesk',sans-serif;font-size:0.70rem;font-weight:700;color:rgba(255,255,255,0.92);text-transform:uppercase;letter-spacing:1.5px;position:relative;z-index:2;text-align:center;}
+        .proj-duration{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;background:rgba(255,255,255,0.20);border-radius:20px;font-size:0.67rem;font-weight:600;color:rgba(255,255,255,0.96);backdrop-filter:blur(8px);position:relative;z-index:2;}
+        .project-visual::before{content:'';position:absolute;top:-60%;left:-60%;width:50%;height:180%;background:rgba(255,255,255,0.08);transform:rotate(25deg);transition:all 0.6s ease;z-index:1;}
+        .project-card:hover .project-visual::before{left:120%;}
+        .project-visual::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,0.06),transparent);opacity:0;transition:opacity 0.4s;z-index:1;}
+        .project-card:hover .project-visual::after{opacity:1;}
+
+        .project-body{padding:24px 22px;display:flex;flex-direction:column;justify-content:space-between;}
+        .project-tags{display:flex;gap:6px;margin-bottom:10px;flex-wrap:wrap;}
+        .project-tag{padding:3px 11px;background:rgba(30,115,190,0.07);color:var(--deep-blue);border-radius:20px;font-size:0.73rem;font-weight:600;border:1px solid rgba(30,115,190,0.09);display:flex;align-items:center;gap:5px;}
+        .project-tag i{font-size:0.85rem;}
+        .project-tag img{width:12px;height:12px;object-fit:contain;}
+        .project-tag-orange{background:rgba(243,156,18,0.08);color:#b7780f;border-color:rgba(243,156,18,0.11);}
+        .project-tag-purple{background:rgba(108,99,255,0.08);color:var(--dark-purple);border-color:rgba(108,99,255,0.11);}
+        .project-tag-green{background:rgba(34,197,94,0.08);color:#15803D;border-color:rgba(34,197,94,0.11);}
+        .project-tag-red{background:rgba(229,9,20,0.12);color:#E50914;border-color:rgba(229,9,20,0.25);}
+        .proj-subtitle{font-size:0.76rem;color:var(--bright-blue);font-weight:600;margin-bottom:9px;text-transform:uppercase;letter-spacing:0.8px;}
+        .project-body h3{font-size:1.08rem;color:var(--dark-navy);margin-bottom:7px;line-height:1.3;}
+        .project-body p{color:var(--text-light);font-size:0.84rem;line-height:1.65;}
+        .project-footer{display:flex;align-items:center;justify-content:space-between;margin-top:16px;padding-top:13px;border-top:1px solid rgba(30,115,190,0.07);}
+        .project-tech{display:flex;gap:5px;flex-wrap:wrap;}
+        .tech-pill{padding:3px 9px;background:rgba(30,115,190,0.05);border:1px solid rgba(30,115,190,0.08);border-radius:20px;font-size:0.69rem;font-weight:600;color:var(--text-medium);display:flex;align-items:center;gap:4px;}
+        .tech-pill i{font-size:0.8rem;}
+        .tech-pill img{width:10px;height:10px;object-fit:contain;}
+        .project-links-row{display:flex;gap:7px;}
+        .proj-link-btn{width:34px;height:34px;border-radius:50%;background:rgba(30,115,190,0.07);border:1px solid rgba(30,115,190,0.09);display:flex;align-items:center;justify-content:center;font-size:0.88rem;color:var(--deep-blue);transition:all 0.3s;}
+        .proj-link-btn:hover{background:var(--gradient-primary);color:#fff;border-color:transparent;transform:scale(1.1);}
+
+        /* TIMELINE */
+        .timeline{max-width:800px;margin:0 auto;position:relative;}
+        .timeline::before{content:'';position:absolute;left:50%;transform:translateX(-50%);width:3px;height:100%;background:linear-gradient(180deg,var(--deep-blue),var(--light-cyan),var(--purple));border-radius:10px;}
+        .timeline-item{position:relative;width:50%;padding:0 38px 45px;}
+        .timeline-item:nth-child(odd){left:0;text-align:right;padding-right:50px;padding-left:0;}
+        .timeline-item:nth-child(even){left:50%;padding-left:50px;padding-right:0;}
+        .timeline-dot{position:absolute;top:5px;width:20px;height:20px;border-radius:50%;background:var(--gradient-primary);box-shadow:0 0 0 5px rgba(30,115,190,0.13);}
+        .timeline-item:nth-child(odd) .timeline-dot{right:-10px;}
+        .timeline-item:nth-child(even) .timeline-dot{left:-10px;}
+        .timeline-card{padding:22px;}
+        .timeline-card .year{display:inline-block;padding:3px 12px;background:var(--gradient-primary);color:#fff;border-radius:20px;font-size:0.75rem;font-weight:600;margin-bottom:10px;}
+        .timeline-card h3{font-size:1.05rem;color:var(--dark-navy);margin-bottom:4px;}
+        .timeline-card .company{color:var(--bright-blue);font-weight:600;font-size:0.88rem;margin-bottom:8px;}
+        .timeline-card p{color:var(--text-light);font-size:0.84rem;}
+        .timeline-tech-icons{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap;}
+        .timeline-item:nth-child(odd) .timeline-tech-icons{justify-content:flex-end;}
+        .timeline-tech-icons i{font-size:1.5rem;opacity:0.7;transition:opacity 0.3s;}
+        .timeline-tech-icons i:hover{opacity:1;}
+        .timeline-tech-icons img{width:22px;height:22px;object-fit:contain;opacity:0.7;}
+
+        /* CONTACT */
+        .contact-container{display:grid;grid-template-columns:1fr 1.35fr;gap:36px;}
+        .contact-info{padding:34px;}
+        .contact-info h3{font-size:1.65rem;color:var(--dark-navy);margin-bottom:11px;}
+        .contact-info>p{color:var(--text-light);margin-bottom:28px;font-size:0.98rem;}
+        .contact-details{display:flex;flex-direction:column;gap:17px;}
+        .contact-item{display:flex;align-items:center;gap:13px;}
+        .contact-icon-wrap{width:50px;height:50px;border-radius:var(--radius-sm);background:rgba(30,115,190,0.05);border:1px solid rgba(30,115,190,0.09);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all 0.3s;}
+        .contact-icon-wrap i{font-size:1.5rem;color:var(--deep-blue);transition:all 0.3s;}
+        .contact-item:hover .contact-icon-wrap{background:var(--gradient-primary);border-color:transparent;transform:rotate(5deg) scale(1.05);}
+        .contact-item:hover .contact-icon-wrap i{color:#fff;}
+        .contact-item h4{font-size:0.84rem;color:var(--dark-navy);margin-bottom:2px;}
+        .contact-item p{color:var(--text-light);font-size:0.88rem;}
+        .contact-socials{display:flex;gap:10px;margin-top:28px;}
+        .social-btn{width:44px;height:44px;border-radius:var(--radius-sm);background:rgba(30,115,190,0.05);border:1px solid rgba(30,115,190,0.09);display:flex;align-items:center;justify-content:center;transition:all 0.3s;cursor:pointer;}
+        .social-btn i{font-size:1.3rem;color:var(--deep-blue);transition:all 0.3s;}
+        .social-btn:hover{background:var(--gradient-primary);border-color:transparent;transform:translateY(-3px);box-shadow:0 8px 20px rgba(30,115,190,0.26);}
+        .social-btn:hover i{color:#fff;}
+        .contact-form-card{padding:34px;}
+        .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+        .form-group{margin-bottom:14px;}
+        .form-group.full-width{grid-column:1/-1;}
+        .form-group label{display:block;font-weight:600;font-size:0.84rem;color:var(--dark-navy);margin-bottom:6px;}
+        .form-group input,.form-group textarea{width:100%;padding:12px 16px;background:rgba(30,115,190,0.03);border:1.5px solid rgba(30,115,190,0.09);border-radius:var(--radius-sm);font-size:0.90rem;color:var(--dark-navy);font-family:'Inter',sans-serif;transition:all 0.3s;outline:none;}
+        .form-group input:focus,.form-group textarea:focus{border-color:var(--bright-blue);box-shadow:0 0 0 4px rgba(46,163,242,0.08);background:#fff;}
+        .form-group input::placeholder,.form-group textarea::placeholder{color:#A0AEC0;}
+        .form-group textarea{height:128px;resize:vertical;}
+        .submit-btn{width:100%;padding:15px;margin-top:4px;}
+        .form-status{text-align:center;margin-top:12px;padding:11px;border-radius:var(--radius-sm);display:none;font-weight:500;font-size:0.88rem;}
+        .form-status.success{display:block;background:rgba(34,197,94,0.08);color:#15803D;border:1px solid rgba(34,197,94,0.17);}
+
+        /* FOOTER */
+        .footer{background:var(--dark-navy);padding:60px 0 28px;position:relative;z-index:1;}
+        .footer::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--gradient-primary);}
+        .footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1.5fr;gap:38px;margin-bottom:42px;}
+        .footer-logo{font-family:'Space Grotesk',sans-serif;font-size:1.65rem;font-weight:700;background:var(--gradient-primary);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;display:inline-block;margin-bottom:13px;}
+        .footer-logo-dot{-webkit-text-fill-color:var(--orange);}
+        .footer-brand p{color:rgba(255,255,255,0.48);font-size:0.88rem;margin-bottom:18px;line-height:1.7;}
+        .footer-tech-stack{display:flex;gap:10px;flex-wrap:wrap;margin-top:15px;}
+        .footer-tech-stack i{font-size:1.6rem;opacity:0.6;transition:all 0.3s;}
+        .footer-tech-stack i:hover{opacity:1;transform:translateY(-3px);}
+        .footer-tech-stack img{width:26px;height:26px;opacity:0.6;transition:all 0.3s;}
+        .footer-tech-stack img:hover{opacity:1;transform:translateY(-3px);}
+        .footer h4{font-size:0.97rem;color:#fff;margin-bottom:16px;}
+        .footer-links{display:flex;flex-direction:column;gap:10px;}
+        .footer-links a{color:rgba(255,255,255,0.43);font-size:0.88rem;transition:all 0.3s;display:flex;align-items:center;gap:7px;}
+        .footer-links a i{font-size:0.9rem;}
+        .footer-links a:hover{color:var(--bright-blue);transform:translateX(5px);}
+        .footer-newsletter p{color:rgba(255,255,255,0.43);font-size:0.84rem;margin-bottom:13px;line-height:1.7;}
+        .newsletter-form{display:flex;gap:7px;}
+        .newsletter-form input{flex:1;padding:10px 14px;border:1px solid rgba(46,163,242,0.18);border-radius:50px;font-size:0.84rem;font-family:'Inter',sans-serif;outline:none;background:rgba(255,255,255,0.05);color:#fff;}
+        .newsletter-form input::placeholder{color:rgba(255,255,255,0.28);}
+        .newsletter-form input:focus{border-color:var(--bright-blue);}
+        .newsletter-form button{padding:10px 18px;border-radius:50px;background:var(--gradient-primary);color:#fff;border:none;font-weight:600;cursor:pointer;transition:all 0.3s;font-family:'Inter',sans-serif;}
+        .newsletter-form button:hover{transform:translateY(-2px);box-shadow:0 5px 15px rgba(30,115,190,0.32);}
+        .footer-bottom{display:flex;justify-content:space-between;align-items:center;padding-top:24px;border-top:1px solid rgba(255,255,255,0.06);}
+        .footer-bottom p{color:rgba(255,255,255,0.33);font-size:0.84rem;}
+        .footer-bottom a{color:var(--bright-blue);font-weight:600;}
+        .footer-bottom-links{display:flex;gap:20px;}
+        .footer-bottom-links a{color:rgba(255,255,255,0.33);font-size:0.84rem;transition:color 0.3s;}
+        .footer-bottom-links a:hover{color:var(--bright-blue);}
+
+        .scroll-top{position:fixed;bottom:28px;right:28px;width:48px;height:48px;border-radius:50%;background:var(--gradient-primary);color:#fff;display:flex;align-items:center;justify-content:center;font-size:1.1rem;cursor:pointer;border:none;opacity:0;visibility:hidden;transition:all 0.4s;z-index:999;box-shadow:0 8px 22px rgba(30,115,190,0.32);}
+        .scroll-top.visible{opacity:1;visibility:visible;}
+        .scroll-top:hover{transform:translateY(-5px);box-shadow:0 14px 30px rgba(30,115,190,0.42);}
+
+        .reveal{opacity:0;transform:translateY(36px);transition:all 0.8s cubic-bezier(0.4,0,0.2,1);}
+        .reveal-left{opacity:0;transform:translateX(-36px);transition:all 0.8s cubic-bezier(0.4,0,0.2,1);}
+        .reveal-right{opacity:0;transform:translateX(36px);transition:all 0.8s cubic-bezier(0.4,0,0.2,1);}
+        .reveal.visible,.reveal-left.visible,.reveal-right.visible{opacity:1;transform:none;}
+
+        @media(max-width:1024px){
+            .hero .container{grid-template-columns:1fr;text-align:center;}
+            .hero p,.hero .tagline{margin-left:auto;margin-right:auto;}
+            .hero-buttons,.hero-stats{justify-content:center;}
+            .about-grid,.skills-container,.contact-container{grid-template-columns:1fr;}
+            .footer-grid{grid-template-columns:1fr 1fr;}
+            .services-grid{grid-template-columns:1fr 1fr;}
+            .projects-grid{grid-template-columns:1fr;}
+            .hero-visual{margin-top:30px;}
+            .about-float-card-2{display:none;}
+        }
+        @media(max-width:768px){
+            .nav-links{position:fixed;top:0;right:-100%;height:100vh;width:275px;background:rgba(255,255,255,0.98);backdrop-filter:blur(22px);flex-direction:column;padding:95px 26px 40px;gap:7px;transition:right 0.4s cubic-bezier(0.4,0,0.2,1);box-shadow:-12px 0 35px rgba(0,0,0,0.08);z-index:999;}
+            .nav-links.open{right:0;}
+            .hamburger{display:flex;z-index:1001;}
+            .hero-content h1{font-size:2.4rem;}
+            .section{padding:72px 0;}
+            .section-header h2{font-size:1.95rem;}
+            .services-grid{grid-template-columns:1fr;}
+            .skills-visual{grid-template-columns:repeat(2,1fr);}
+            .about-features{grid-template-columns:1fr;}
+            .project-card{grid-template-columns:1fr;}
+            .project-visual{border-radius:var(--radius-md) var(--radius-md) 0 0;min-height:160px;}
+            .timeline::before{left:18px;}
+            .timeline-item{width:100%!important;left:0!important;padding-left:52px!important;padding-right:0!important;text-align:left!important;}
+            .timeline-dot{left:8px!important;right:auto!important;}
+            .timeline-tech-icons{justify-content:flex-start!important;}
+            .form-grid{grid-template-columns:1fr;}
+            .footer-grid{grid-template-columns:1fr;}
+            .footer-bottom{flex-direction:column;gap:12px;text-align:center;}
+            .floating-badge{display:none;}
+            .navbar{width:calc(100% - 26px);top:10px;padding:11px 16px;}
+            .custom-cursor,.cursor-dot{display:none;}
+            .hero-lottie-wrap{width:300px;height:300px;}
+            .hero-lottie-main{width:230px;height:230px;}
+            .stat-divider{display:none;}
+        }
+        @media(max-width:480px){
+            .hero-content h1{font-size:1.95rem;letter-spacing:-1px;}
+            .hero-stats{flex-direction:column;gap:13px;}
+            .btn{padding:12px 24px;font-size:0.86rem;}
+        }
+    </style>
+</head>
+<body>
+
+<div class="bg-orbs">
+    <div class="orb orb-1"></div><div class="orb orb-2"></div>
+    <div class="orb orb-3"></div><div class="orb orb-4"></div>
+</div>
+<div class="grid-pattern"></div>
+<div class="custom-cursor" id="cursor"></div>
+<div class="cursor-dot" id="cursorDot"></div>
+
+<!-- NAVBAR -->
+<nav class="navbar" id="navbar">
+    <div class="container">
+        <a href="#" class="logo">Vedant<span class="logo-dot"></span></a>
+        <ul class="nav-links" id="navLinks">
+            <li><a href="#home" onclick="closeNav()">Home</a></li>
+            <li><a href="#about" onclick="closeNav()">About</a></li>
+            <li><a href="#services" onclick="closeNav()">Services</a></li>
+            <li><a href="#skills" onclick="closeNav()">Skills</a></li>
+            <li><a href="#projects" onclick="closeNav()">Projects</a></li>
+            <li><a href="#experience" onclick="closeNav()">Experience</a></li>
+            <li><a href="#contact" class="nav-cta" onclick="closeNav()">Hire Me</a></li>
+        </ul>
+        <div class="hamburger" id="hamburger" onclick="toggleNav()">
+            <span></span><span></span><span></span>
+        </div>
+    </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="home">
+    <div class="container">
+        <div class="hero-content">
+            <div class="hero-status"><span class="status-dot"></span>Open to Freelance Projects</div>
+            <h1>Hi, I'm <span class="orange-text">Vedant</span> —<br><span class="gradient-text">Flutter & Web Dev</span><br>&amp; Engineer</h1>
+            <div class="subtitle">I build <span class="typed-text" id="typedText"></span></div>
+            <div class="tagline">"Building Scalable Mobile & Web Experiences That Matter"</div>
+            <p>Crafting beautiful, high-performance Flutter apps and web platforms powered by Firebase &amp; clean architecture. From idea to Play Store — I bring your vision to life.</p>
+            <div class="hero-buttons">
+                <a href="#projects" class="btn btn-primary"><i class="devicon-flutter-plain" style="font-size:1.1rem;"></i> View My Work</a>
+                <a href="#contact" class="btn btn-secondary">🤝 Hire Me</a>
+            </div>
+            <div class="hero-stats">
+                <div class="stat-item"><span class="stat-number" data-count="5">0</span><span class="stat-label">Apps Built</span></div>
+                <div class="stat-divider"></div>
+                <div class="stat-item"><span class="stat-number" data-count="8">0</span><span class="stat-label">Happy Clients</span></div>
+                <div class="stat-divider"></div>
+                <div class="stat-item"><span class="stat-number" data-count="1">0</span><span class="stat-label">Year Freelancing</span></div>
+            </div>
+        </div>
+        <div class="hero-visual">
+            <div class="hero-lottie-wrap">
+                <div class="hero-ring"></div><div class="hero-ring"></div><div class="hero-ring"></div>
+                <lottie-player class="hero-lottie-main" src="https://assets5.lottiefiles.com/packages/lf20_w51pcehl.json" background="transparent" speed="1" loop autoplay></lottie-player>
+                <div class="floating-badge"><i class="devicon-flutter-plain colored" style="font-size:1.3rem;"></i>Flutter Expert</div>
+                <div class="floating-badge"><img src="https://www.vectorlogo.zone/logos/firebase/firebase-icon.svg" style="width:20px;height:20px;" alt="">Firebase Ready</div>
+                <div class="floating-badge"><i class="devicon-html5-plain colored" style="font-size:1.3rem;"></i>Web Dev</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee-section">
+    <div class="marquee-track">
+        <div class="marquee-item"><i class="devicon-flutter-plain colored"></i>Flutter<span class="marquee-dot"></span></div>
+        <div class="marquee-item"><i class="devicon-dart-plain colored"></i>Dart<span class="marquee-dot"></span></div>
+        <div class="marquee-item"><img src="https://www.vectorlogo.zone/logos/firebase/firebase-icon.svg" style="width:22px;height:22px;" alt="">Firebase<span class="marquee-dot"></span></div>
+        <div class="marquee-item"><i class="devicon-html5-plain colored"></i>HTML5<span class="marquee-dot"></span></div>
+        <div class="marquee-item"><i class="devicon-css3-plain colored"></i>CSS3<span class="marquee-dot"></span></div>
+        <div class="marquee-item"><i class="devicon-javascript-plain colored"></i>JavaScript<span class="marquee-dot"></span></div>
+        <div class="marquee-item"><i class="devicon-php-plain colored"></i>PHP<span class="marquee-dot"></span></div>
+        <div class="marquee-item"><i class="devicon-mysql-plain colored"></i>MySQL<span class="marquee-dot"></span></div>
+        <div class="marquee-item"><i class="devicon-java-plain colored"></i>Java<span class="marquee-dot"></span></div>
+        <div class="marquee-item"><i class="devicon-python-plain colored"></i>Python<span class="marquee-dot"></span></div>
+        <div class="marquee-item"><i class="devicon-android-plain colored"></i>Android<span class="marquee-dot"></span></div>
+        <div class="marquee-item"><i class="devicon-git-plain colored"></i>Git<span class="marquee-dot"></span></div>
+        <div class="marquee-item">🛵 RideNGo<span class="marquee-dot"></span></div>
+        <div class="marquee-item">💊 MediTracker<span class="marquee-dot"></span></div>
+        <div class="marquee-item">🏥 MEDIQO<span class="marquee-dot"></span></div>
+        <div class="marquee-item">💪 GymManagement<span class="marquee-dot"></span></div>
+        <div class="marquee-item">🎬 CineBook<span class="marquee-dot"></span></div>
+        <!-- duplicate for seamless loop -->
+        <div class="marquee-item"><i class="devicon-flutter-plain colored"></i>Flutter<span class="marquee-dot"></span></div>
+        <div class="marquee-item"><i class="devicon-dart-plain colored"></i>Dart<span class="marquee-dot"></span></div>
+        <div class="marquee-item"><img src="https://www.vectorlogo.zone/logos/firebase/firebase-icon.svg" style="width:22px;height:22px;" alt="">Firebase<span class="marquee-dot"></span></div>
+        <div class="marquee-item"><i class="devicon-html5-plain colored"></i>HTML5<span class="marquee-dot"></span></div>
+        <div class="marquee-item"><i class="devicon-css3-plain colored"></i>CSS3<span class="marquee-dot"></span></div>
+        <div class="marquee-item"><i class="devicon-javascript-plain colored"></i>JavaScript<span class="marquee-dot"></span></div>
+        <div class="marquee-item"><i class="devicon-php-plain colored"></i>PHP<span class="marquee-dot"></span></div>
+        <div class="marquee-item"><i class="devicon-mysql-plain colored"></i>MySQL<span class="marquee-dot"></span></div>
+        <div class="marquee-item"><i class="devicon-java-plain colored"></i>Java<span class="marquee-dot"></span></div>
+        <div class="marquee-item"><i class="devicon-python-plain colored"></i>Python<span class="marquee-dot"></span></div>
+        <div class="marquee-item"><i class="devicon-android-plain colored"></i>Android<span class="marquee-dot"></span></div>
+        <div class="marquee-item"><i class="devicon-git-plain colored"></i>Git<span class="marquee-dot"></span></div>
+        <div class="marquee-item">🛵 RideNGo<span class="marquee-dot"></span></div>
+        <div class="marquee-item">💊 MediTracker<span class="marquee-dot"></span></div>
+        <div class="marquee-item">🏥 MEDIQO<span class="marquee-dot"></span></div>
+        <div class="marquee-item">💪 GymManagement<span class="marquee-dot"></span></div>
+        <div class="marquee-item">🎬 CineBook<span class="marquee-dot"></span></div>
+    </div>
+</div>
+
+<!-- ABOUT -->
+<section class="section" id="about">
+    <div class="container">
+        <div class="section-header reveal">
+            <span class="section-badge"><span class="badge-dot"></span>About Me</span>
+            <h2>Hi, I'm <span class="highlight">Vedant</span> 👋</h2>
+            <p>A Flutter & Web developer who turns ideas into powerful digital experiences</p>
+        </div>
+        <div class="about-grid">
+            <div class="about-visual reveal-left">
+                <div class="about-3d-card" id="about3dCard">
+                    <lottie-player class="about-lottie-main" src="https://assets3.lottiefiles.com/packages/lf20_qp1q7mct.json" background="transparent" speed="0.8" loop autoplay></lottie-player>
+                </div>
+                <div class="about-float-card">
+                    <span class="big-number">5</span>
+                    <span>Real Projects<br>Delivered</span>
+                </div>
+                <div class="about-float-card-2">
+                    <span style="font-size:2rem;">🏆</span>
+                    <div class="float-text"><strong>Top Rated</strong><span>Freelancer</span></div>
+                </div>
+            </div>
+
+            <div class="about-content reveal-right">
+                <h3>Flutter & Web Developer, Mobile Craftsman</h3>
+                <p>I'm <strong>Vedant</strong>, a dedicated developer with a strong foundation in Flutter, Dart, Java, and web technologies. I build cross-platform apps and web platforms that feel native, run fast, and scale well.</p>
+                <p>Shipped real apps — <strong>RideNGo</strong>, <strong>MediTracker</strong>, <strong>MEDIQO</strong>, <strong>GymManagement</strong>, and <strong>CineBook</strong> — all production-grade projects.</p>
+                <p>Driven by clean architecture, great UX, and code I'm proud of.</p>
+
+                <div class="about-features">
+                    <div class="feature-item">
+                        <div class="feat-icon"><i class="devicon-flutter-plain colored"></i></div>
+                        <span>Flutter &amp; Dart</span>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feat-icon">
+                            <img src="https://www.vectorlogo.zone/logos/firebase/firebase-icon.svg" alt="Firebase">
+                        </div>
+                        <span>Firebase Integration</span>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feat-icon">
+                            <img src="https://www.vectorlogo.zone/logos/java/java-icon.svg" alt="Java" style="width:26px;height:26px;">
+                        </div>
+                        <span>Java / Android</span>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feat-icon"><i class="devicon-html5-plain colored"></i></div>
+                        <span>HTML / CSS / JS</span>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feat-icon"><i class="devicon-php-plain colored"></i></div>
+                        <span>PHP & MySQL</span>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feat-icon"><i class="devicon-git-plain colored"></i></div>
+                        <span>Git &amp; CI/CD</span>
+                    </div>
+                </div>
+                <a href="https://drive.google.com/uc?export=download&id=1GpJVUvnH1yNu4fyMi336qEV4kzY_D5Sr" class="btn btn-primary">📄 Download Resume</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- SERVICES -->
+<section class="section services-section" id="services">
+    <div class="container">
+        <div class="section-header reveal">
+            <span class="section-badge"><span class="badge-dot"></span>Services</span>
+            <h2>What <span class="highlight-orange">Vedant</span> Offers</h2>
+            <p>Mobile & web-focused services to bring your project idea to life</p>
+        </div>
+        <div class="services-grid">
+            <div class="service-card glass-card reveal">
+                <span class="service-number">01</span>
+                <div class="service-icon-wrap"><i class="devicon-flutter-plain colored"></i></div>
+                <h3>Flutter App Development</h3>
+                <p>Cross-platform apps for Android &amp; iOS with beautiful UI and smooth 60fps performance.</p>
+            </div>
+            <div class="service-card glass-card reveal">
+                <span class="service-number">02</span>
+                <div class="service-icon-wrap"><img src="https://www.vectorlogo.zone/logos/firebase/firebase-icon.svg" alt="Firebase"></div>
+                <h3>Firebase Integration</h3>
+                <p>Real-time databases, auth, cloud functions, and push notifications with Firebase.</p>
+            </div>
+            <div class="service-card glass-card reveal">
+                <span class="service-number">03</span>
+                <div class="service-icon-wrap"><img src="https://www.vectorlogo.zone/logos/getpostman/getpostman-icon.svg" alt="API"></div>
+                <h3>REST API Integration</h3>
+                <p>Seamless backend connections with clean API consumption and error handling.</p>
+            </div>
+            <div class="service-card glass-card reveal">
+                <span class="service-number">04</span>
+                <div class="service-icon-wrap">
+                    <img src="https://www.vectorlogo.zone/logos/java/java-icon.svg" alt="Java">
+                </div>
+                <h3>Java / Android Dev</h3>
+                <p>Native Android development and Java codebase modernization &amp; features.</p>
+            </div>
+            <div class="service-card glass-card reveal">
+                <span class="service-number">05</span>
+                <div class="service-icon-wrap"><i class="devicon-html5-plain colored"></i></div>
+                <h3>Web Development</h3>
+                <p>Full-stack web apps with HTML, CSS, JS, PHP &amp; MySQL — responsive and production-ready.</p>
+            </div>
+            <div class="service-card glass-card reveal">
+                <span class="service-number">06</span>
+                <div class="service-icon-wrap"><i class="devicon-android-plain colored"></i></div>
+                <h3>App Store Publishing</h3>
+                <p>Full deployment — Play Store &amp; App Store listing, signing, and releases.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- SKILLS -->
+<section class="section" id="skills">
+    <div class="container">
+        <div class="section-header reveal">
+            <span class="section-badge"><span class="badge-dot"></span>My Skills</span>
+            <h2>Vedant's <span class="highlight">Tech Stack</span></h2>
+            <p>Real technologies with their actual official logos!</p>
+        </div>
+        <div class="skills-container">
+            <div class="skills-visual reveal-left">
+                <!-- Mobile Skills -->
+                <div class="skill-orb glass-card flutter-orb">
+                    <div class="skill-tech-icon"><i class="devicon-flutter-plain colored"></i></div>
+                    <span class="skill-name">Flutter</span><span class="skill-pct">95%</span>
+                    <div class="progress-ring"><div class="progress-fill" data-width="95%"></div></div>
+                </div>
+                <div class="skill-orb glass-card dart-orb">
+                    <div class="skill-tech-icon"><i class="devicon-dart-plain colored"></i></div>
+                    <span class="skill-name">Dart</span><span class="skill-pct">95%</span>
+                    <div class="progress-ring"><div class="progress-fill" data-width="95%"></div></div>
+                </div>
+                <div class="skill-orb glass-card java-orb">
+                    <div class="skill-tech-icon">
+                        <img src="https://www.vectorlogo.zone/logos/java/java-icon.svg" alt="Java">
+                    </div>
+                    <span class="skill-name">Java</span><span class="skill-pct">85%</span>
+                    <div class="progress-ring"><div class="progress-fill" data-width="85%"></div></div>
+                </div>
+                <div class="skill-orb glass-card firebase-orb">
+                    <div class="skill-tech-icon"><img src="https://www.vectorlogo.zone/logos/firebase/firebase-icon.svg" alt="Firebase"></div>
+                    <span class="skill-name">Firebase</span><span class="skill-pct">80%</span>
+                    <div class="progress-ring"><div class="progress-fill" data-width="80%"></div></div>
+                </div>
+                <!-- Web Skills -->
+                <div class="skill-orb glass-card html-orb">
+                    <div class="skill-tech-icon"><i class="devicon-html5-plain colored"></i></div>
+                    <span class="skill-name">HTML5</span><span class="skill-pct">90%</span>
+                    <div class="progress-ring"><div class="progress-fill" data-width="90%"></div></div>
+                </div>
+                <div class="skill-orb glass-card css-orb">
+                    <div class="skill-tech-icon"><i class="devicon-css3-plain colored"></i></div>
+                    <span class="skill-name">CSS3</span><span class="skill-pct">88%</span>
+                    <div class="progress-ring"><div class="progress-fill" data-width="88%"></div></div>
+                </div>
+                <div class="skill-orb glass-card js-orb">
+                    <div class="skill-tech-icon"><i class="devicon-javascript-plain colored"></i></div>
+                    <span class="skill-name">JavaScript</span><span class="skill-pct">80%</span>
+                    <div class="progress-ring"><div class="progress-fill" data-width="80%"></div></div>
+                </div>
+                <div class="skill-orb glass-card php-orb">
+                    <div class="skill-tech-icon"><i class="devicon-php-plain colored"></i></div>
+                    <span class="skill-name">PHP</span><span class="skill-pct">75%</span>
+                    <div class="progress-ring"><div class="progress-fill" data-width="75%"></div></div>
+                </div>
+                <div class="skill-orb glass-card mysql-orb">
+                    <div class="skill-tech-icon"><i class="devicon-mysql-plain colored"></i></div>
+                    <span class="skill-name">MySQL</span><span class="skill-pct">75%</span>
+                    <div class="progress-ring"><div class="progress-fill" data-width="75%"></div></div>
+                </div>
+            </div>
+
+            <div class="skills-info reveal-right">
+                <h3>Always Learning, Always Building</h3>
+                <p>My core is Flutter &amp; Dart for mobile, and HTML/CSS/JS/PHP for web. Every skill uses its real official logo — because I actually use these tools daily.</p>
+
+                <div class="skill-bar-item">
+                    <div class="skill-bar-header">
+                        <div class="skill-bar-label"><div class="bar-icon"><i class="devicon-flutter-plain colored"></i></div>Flutter &amp; Dart</div>
+                        <span class="percent">95%</span>
+                    </div>
+                    <div class="skill-bar-track"><div class="skill-bar-fill flutter-bar" data-width="95%"></div></div>
+                </div>
+                <div class="skill-bar-item">
+                    <div class="skill-bar-header">
+                        <div class="skill-bar-label">
+                            <div class="bar-icon"><img src="https://www.vectorlogo.zone/logos/java/java-icon.svg" alt="Java"></div>
+                            Java (Android)
+                        </div>
+                        <span class="percent">85%</span>
+                    </div>
+                    <div class="skill-bar-track"><div class="skill-bar-fill java-bar" data-width="85%"></div></div>
+                </div>
+                <div class="skill-bar-item">
+                    <div class="skill-bar-header">
+                        <div class="skill-bar-label"><div class="bar-icon"><img src="https://www.vectorlogo.zone/logos/firebase/firebase-icon.svg" alt="Firebase"></div>Firebase</div>
+                        <span class="percent">80%</span>
+                    </div>
+                    <div class="skill-bar-track"><div class="skill-bar-fill firebase-bar" data-width="80%"></div></div>
+                </div>
+                <div class="skill-bar-item">
+                    <div class="skill-bar-header">
+                        <div class="skill-bar-label"><div class="bar-icon"><i class="devicon-html5-plain colored"></i></div>HTML / CSS / JS</div>
+                        <span class="percent">88%</span>
+                    </div>
+                    <div class="skill-bar-track"><div class="skill-bar-fill web-bar" data-width="88%"></div></div>
+                </div>
+                <div class="skill-bar-item">
+                    <div class="skill-bar-header">
+                        <div class="skill-bar-label"><div class="bar-icon"><i class="devicon-php-plain colored"></i></div>PHP &amp; MySQL</div>
+                        <span class="percent">75%</span>
+                    </div>
+                    <div class="skill-bar-track"><div class="skill-bar-fill api-bar" data-width="75%"></div></div>
+                </div>
+                <div class="skill-bar-item">
+                    <div class="skill-bar-header">
+                        <div class="skill-bar-label"><div class="bar-icon"><i class="devicon-cplusplus-plain colored"></i></div>C / C++ / Python</div>
+                        <span class="percent">72%</span>
+                    </div>
+                    <div class="skill-bar-track"><div class="skill-bar-fill cpp-bar" data-width="72%"></div></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- PROJECTS -->
+<section class="section projects-section" id="projects">
+    <div class="container">
+        <div class="section-header reveal">
+            <span class="section-badge"><span class="badge-dot"></span>Portfolio</span>
+            <h2>Vedant's <span class="highlight">Real Projects</span></h2>
+            <p>5 production-grade apps & platforms built from scratch</p>
+        </div>
+
+        <!-- Updated Filters with Web -->
+        <div class="project-filters reveal">
+            <button class="filter-btn active" onclick="filterProjects('all',this)">All Apps</button>
+            <button class="filter-btn" onclick="filterProjects('mobility',this)">🛵 Mobility</button>
+            <button class="filter-btn" onclick="filterProjects('health',this)">💊 Health</button>
+            <button class="filter-btn" onclick="filterProjects('fitness',this)">💪 Fitness</button>
+            <button class="filter-btn" onclick="filterProjects('web',this)">🌐 Web</button>
+        </div>
+
+        <div class="projects-grid" id="projectsGrid">
+
+            <!-- RideNGo -->
+            <div class="project-card glass-card reveal" data-category="mobility">
+                <div class="project-visual" style="background:linear-gradient(145deg,#0F4C81,#1E73BE,#2EA3F2);">
+                    <iframe 
+                        src="https://lottie.host/embed/7791f29e-0cee-4dc0-8efb-56945ea015e3/SzMeAfErnC.lottie"
+                        class="proj-illustration"
+                        style="width:130px;height:130px;border:none;">
+                    </iframe>
+                    <span class="proj-label">Smart Mobility</span>
+                    <span class="proj-duration">⏱ 2–3 months</span>
+                </div>
+                <div class="project-body">
+                    <div>
+                        <div class="project-tags">
+                            <span class="project-tag"><i class="devicon-flutter-plain colored"></i>Flutter</span>
+                            <span class="project-tag"><i class="devicon-dart-plain colored"></i>Dart</span>
+                        </div>
+                        <div class="proj-subtitle">RideNGo</div>
+                        <h3>Rider-less Smart Mobility App</h3>
+                        <p>Gives users full control of bikes with no rider needed. Real-time monitoring, safety features, and cost-reducing smart automation.</p>
+                    </div>
+                    <div class="project-footer">
+                        <div class="project-tech">
+                            <span class="tech-pill"><i class="devicon-flutter-plain colored"></i>Flutter</span>
+                            <span class="tech-pill">GPS</span>
+                            <span class="tech-pill">IoT</span>
+                        </div>
+                        <div class="project-links-row">
+                            <a class="proj-link-btn" href="#" title="View">🔗</a>
+                            <a class="proj-link-btn" href="#" title="GitHub"><i class="devicon-github-original"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- MediTracker -->
+            <div class="project-card glass-card reveal" data-category="health">
+                <div class="project-visual" style="background:linear-gradient(145deg,#0D7A3E,#22C55E,#4ADE80);">
+                    <iframe 
+                        src="https://lottie.host/embed/24bc1d0d-1978-423a-8476-07964c534afe/nuzG4PCjAT.lottie"
+                        class="proj-illustration"
+                        style="width:130px;height:130px;border:none;">
+                    </iframe>
+                    <span class="proj-label">Medicine Tracker</span>
+                    <span class="proj-duration">⏱ 2–3 months</span>
+                </div>
+                <div class="project-body">
+                    <div>
+                        <div class="project-tags">
+                            <span class="project-tag project-tag-green"><i class="devicon-flutter-plain colored"></i>Flutter</span>
+                            <span class="project-tag project-tag-green"><img src="https://www.vectorlogo.zone/logos/firebase/firebase-icon.svg" alt="">Firebase</span>
+                        </div>
+                        <div class="proj-subtitle" style="color:#16A34A;">MediTracker</div>
+                        <h3>Medicine Tracker App</h3>
+                        <p>Tracks customer medicine stock and sends auto-notifications when running low — no missed doses ever.</p>
+                    </div>
+                    <div class="project-footer">
+                        <div class="project-tech">
+                            <span class="tech-pill"><i class="devicon-flutter-plain colored"></i>Flutter</span>
+                            <span class="tech-pill"><img src="https://www.vectorlogo.zone/logos/firebase/firebase-icon.svg" alt="">Firebase</span>
+                        </div>
+                        <div class="project-links-row">
+                            <a class="proj-link-btn" href="#" title="View">🔗</a>
+                            <a class="proj-link-btn" href="#" title="GitHub"><i class="devicon-github-original"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- MEDIQO -->
+            <div class="project-card glass-card reveal" data-category="health">
+                <div class="project-visual" style="background:linear-gradient(145deg,#3730A3,#4B3F72,#6C63FF);">
+                    <iframe 
+                        src="https://lottie.host/embed/2fe23d32-f690-4406-8848-5476214a1540/8glVrTqRMC.lottie"
+                        class="proj-illustration"
+                        style="width:130px;height:130px;border:none;">
+                    </iframe>
+                    <span class="proj-label">Pharmacy Mgmt</span>
+                    <span class="proj-duration">⏱ 2–3 months</span>
+                </div>
+                <div class="project-body">
+                    <div>
+                        <div class="project-tags">
+                            <span class="project-tag project-tag-purple"><i class="devicon-flutter-plain colored"></i>Flutter</span>
+                            <span class="project-tag project-tag-purple"><img src="https://www.vectorlogo.zone/logos/firebase/firebase-icon.svg" alt="">Firebase</span>
+                            <span class="project-tag project-tag-purple"><img src="https://www.vectorlogo.zone/logos/getpostman/getpostman-icon.svg" alt="">API</span>
+                        </div>
+                        <div class="proj-subtitle" style="color:var(--purple);">MEDIQO</div>
+                        <h3>Pharmacy Management App</h3>
+                        <p>Automates pharmacy inventory, real-time sales tracking, and supplier order management — reducing overhead.</p>
+                    </div>
+                    <div class="project-footer">
+                        <div class="project-tech">
+                            <span class="tech-pill"><i class="devicon-flutter-plain colored"></i>Flutter</span>
+                            <span class="tech-pill">Inventory</span>
+                            <span class="tech-pill">Billing</span>
+                        </div>
+                        <div class="project-links-row">
+                            <a class="proj-link-btn" href="#" title="View">🔗</a>
+                            <a class="proj-link-btn" href="#" title="GitHub"><i class="devicon-github-original"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- GymManagement -->
+            <div class="project-card glass-card reveal" data-category="fitness">
+                <div class="project-visual" style="background:linear-gradient(145deg,#B45309,#F39C12,#F5C542);">
+                    <iframe 
+                        src="https://lottie.host/embed/dad4a79b-6149-41d1-a764-ac7519f2f7bc/cF0dvoRZsI.lottie"
+                        class="proj-illustration"
+                        style="width:130px;height:130px;border:none;">
+                    </iframe>
+                    <span class="proj-label">Fitness Mgmt</span>
+                    <span class="proj-duration">⏱ 2–3 months</span>
+                </div>
+                <div class="project-body">
+                    <div>
+                        <div class="project-tags">
+                            <span class="project-tag project-tag-orange"><i class="devicon-flutter-plain colored"></i>Flutter</span>
+                            <span class="project-tag project-tag-orange"><img src="https://www.vectorlogo.zone/logos/firebase/firebase-icon.svg" alt="">Firebase</span>
+                        </div>
+                        <div class="proj-subtitle" style="color:#b7780f;">GymManagement</div>
+                        <h3>Fitness Center Management App</h3>
+                        <p>Manages memberships, tracks attendance, and schedules workouts with automated reminders for smarter gyms.</p>
+                    </div>
+                    <div class="project-footer">
+                        <div class="project-tech">
+                            <span class="tech-pill"><i class="devicon-flutter-plain colored"></i>Flutter</span>
+                            <span class="tech-pill">Scheduling</span>
+                            <span class="tech-pill">Reminders</span>
+                        </div>
+                        <div class="project-links-row">
+                            <a class="proj-link-btn" href="#" title="View">🔗</a>
+                            <a class="proj-link-btn" href="#" title="GitHub"><i class="devicon-github-original"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ✅ CineBook — NEW WEB PROJECT -->
+            <div class="project-card glass-card reveal" data-category="web">
+                <div class="project-visual" style="background:linear-gradient(145deg,#E50914,#B20710,#831010);">
+                    <div class="proj-illustration" style="font-size:70px;display:flex;align-items:center;justify-content:center;width:130px;height:130px;filter:drop-shadow(0 10px 20px rgba(0,0,0,0.3));">
+                        🎬
+                    </div>
+                    <span class="proj-label">Web Application</span>
+                    <span class="proj-duration">⏱ 1–2 months</span>
+                </div>
+                <div class="project-body">
+                    <div>
+                        <div class="project-tags">
+                            <span class="project-tag project-tag-red"><i class="devicon-html5-plain colored"></i>HTML</span>
+                            <span class="project-tag project-tag-red"><i class="devicon-css3-plain colored"></i>CSS</span>
+                            <span class="project-tag project-tag-red"><i class="devicon-javascript-plain colored"></i>JS</span>
+                        </div>
+                        <div class="proj-subtitle" style="color:#E50914;">CineBook</div>
+                        <h3>Movie Ticket Booking Platform</h3>
+                        <p>Full-stack movie booking web app like BookMyShow. Browse movies, select seats, and book tickets with secure payment integration.</p>
+                    </div>
+                    <div class="project-footer">
+                        <div class="project-tech">
+                            <span class="tech-pill"><i class="devicon-php-plain colored"></i>PHP</span>
+                            <span class="tech-pill"><i class="devicon-mysql-plain colored"></i>MySQL</span>
+                            <span class="tech-pill"><i class="devicon-javascript-plain colored"></i>JS</span>
+                        </div>
+                        <div class="project-links-row">
+                            <a class="proj-link-btn" href="#" title="Live Demo">🔗</a>
+                            <a class="proj-link-btn" href="#" title="GitHub"><i class="devicon-github-original"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<!-- EXPERIENCE -->
+<section class="section" id="experience">
+    <div class="container">
+        <div class="section-header reveal">
+            <span class="section-badge"><span class="badge-dot"></span>Journey</span>
+            <h2>Vedant's <span class="highlight">Experience</span></h2>
+            <p>Building real skills through real projects</p>
+        </div>
+        <div class="timeline">
+            <div class="timeline-item reveal">
+                <div class="timeline-dot"></div>
+                <div class="timeline-card glass-card">
+                    <span class="year">2024 — Present</span>
+                    <h3>Flutter & Web Developer — Freelance</h3>
+                    <span class="company">Self-Employed / Various Clients</span>
+                    <p>Delivered 5 production projects — 4 Flutter apps and CineBook (web). Full lifecycle: requirements → design → code → deployment.</p>
+                    <div class="timeline-tech-icons">
+                        <i class="devicon-flutter-plain colored" title="Flutter"></i>
+                        <i class="devicon-dart-plain colored" title="Dart"></i>
+                        <img src="https://www.vectorlogo.zone/logos/firebase/firebase-icon.svg" alt="Firebase">
+                        <i class="devicon-html5-plain colored" title="HTML"></i>
+                        <i class="devicon-php-plain colored" title="PHP"></i>
+                        <i class="devicon-git-plain colored" title="Git"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="timeline-item reveal">
+                <div class="timeline-dot"></div>
+                <div class="timeline-card glass-card">
+                    <span class="year">2023 — 2024</span>
+                    <h3>Mobile & Web Developer — Personal Projects</h3>
+                    <span class="company">Open Source &amp; Portfolio</span>
+                    <p>Built personal Flutter apps and web projects. Mastered state management, REST APIs, Firebase, HTML/CSS, and PHP/MySQL.</p>
+                    <div class="timeline-tech-icons">
+                        <i class="devicon-flutter-plain colored"></i>
+                        <img src="https://www.vectorlogo.zone/logos/firebase/firebase-icon.svg" alt="Firebase">
+                        <i class="devicon-javascript-plain colored"></i>
+                        <i class="devicon-mysql-plain colored"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="timeline-item reveal">
+                <div class="timeline-dot"></div>
+                <div class="timeline-card glass-card">
+                    <span class="year">2022 — 2023</span>
+                    <h3>CS &amp; Programming Student</h3>
+                    <span class="company">University / Self-Learning</span>
+                    <p>Built foundation in Java, C/C++, Python, DSA, and web basics. Discovered Flutter &amp; never looked back!</p>
+                    <div class="timeline-tech-icons">
+                        <img src="https://www.vectorlogo.zone/logos/java/java-icon.svg" alt="Java">
+                        <i class="devicon-cplusplus-plain colored"></i>
+                        <i class="devicon-python-plain colored"></i>
+                        <i class="devicon-html5-plain colored"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CONTACT -->
+<section class="section" id="contact">
+    <div class="container">
+        <div class="section-header reveal">
+            <span class="section-badge"><span class="badge-dot"></span>Contact</span>
+            <h2>Let's Build <span class="highlight">Together</span></h2>
+            <p>Have an app or web idea? Let's turn it into reality with Vedant</p>
+        </div>
+        <div class="contact-container">
+            <div class="contact-info glass-card reveal-left">
+                <h3>Get in Touch</h3>
+                <p>Open to freelance Flutter & web projects, collabs, and exciting digital opportunities!</p>
+                <div class="contact-details">
+                    <div class="contact-item">
+                        <div class="contact-icon-wrap"><i class="devicon-google-plain colored"></i></div>
+                        <div>
+                            <h4>Email Me</h4>
+                            <p><a href="mailto:vedantnagul@gmail.com">vedantnagul@gmail.com</a></p>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <div class="contact-icon-wrap"><i class="devicon-github-original"></i></div>
+                        <div>
+                            <h4>GitHub</h4>
+                            <p><a href="https://github.com/vedant242006" target="_blank">github.com/vedant242006</a></p>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <div class="contact-icon-wrap"><i class="devicon-linkedin-plain colored"></i></div>
+                        <div><h4>LinkedIn</h4><p>linkedin.com/in/vedant</p></div>
+                    </div>
+                </div>
+                <div class="contact-socials">
+                    <a class="social-btn" href="https://github.com/vedant242006" target="_blank"><i class="devicon-github-original"></i></a>
+                    <a class="social-btn" href="#"><i class="devicon-linkedin-plain colored"></i></a>
+                    <a class="social-btn" href="#"><i class="devicon-flutter-plain colored"></i></a>
+                    <a class="social-btn" href="#"><i class="devicon-html5-plain colored"></i></a>
+                </div>
+            </div>
+            <form class="contact-form-card glass-card reveal-right" id="contactForm" onsubmit="sendToGmail(event)">
+                <div class="form-grid">
+                    <div class="form-group"><label>Your Name</label><input type="text" placeholder="Ravi Kumar" required></div>
+                    <div class="form-group"><label>Your Email</label><input type="email" placeholder="ravi@example.com" required></div>
+                    <div class="form-group full-width"><label>Project Type</label><input type="text" placeholder="Flutter App, Web App, Firebase Integration..."></div>
+                    <div class="form-group full-width"><label>Tell Vedant About Your Project</label><textarea placeholder="Describe your app or web idea, features, timeline..."></textarea></div>
+                </div>
+                <button type="submit" class="btn btn-primary submit-btn">
+                    <i class="devicon-flutter-plain" style="font-size:1rem;"></i>Send Message to Vedant
+                </button>
+                <div class="form-status" id="formStatus">✅ Message sent! Vedant replies within 24 hours.</div>
+            </form>
+        </div>
+    </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+    <div class="container">
+        <div class="footer-grid">
+            <div class="footer-brand">
+                <div class="footer-logo">Vedant<span class="footer-logo-dot">.</span></div>
+                <p>Flutter & Web developer building production-grade projects — RideNGo, MediTracker, MEDIQO, GymManagement &amp; CineBook.</p>
+                <div class="footer-tech-stack">
+                    <i class="devicon-flutter-plain colored" title="Flutter"></i>
+                    <i class="devicon-dart-plain colored" title="Dart"></i>
+                    <img src="https://www.vectorlogo.zone/logos/firebase/firebase-icon.svg" title="Firebase" alt="">
+                    <i class="devicon-html5-plain colored" title="HTML5"></i>
+                    <i class="devicon-css3-plain colored" title="CSS3"></i>
+                    <i class="devicon-javascript-plain colored" title="JS"></i>
+                    <i class="devicon-php-plain colored" title="PHP"></i>
+                    <i class="devicon-mysql-plain colored" title="MySQL"></i>
+                    <img src="https://www.vectorlogo.zone/logos/java/java-icon.svg" title="Java" alt="">
+                    <i class="devicon-python-plain colored" title="Python"></i>
+                    <i class="devicon-git-plain colored" title="Git"></i>
+                </div>
+            </div>
+            <div>
+                <h4>Quick Links</h4>
+                <div class="footer-links">
+                    <a href="#home">→ Home</a>
+                    <a href="#about">→ About Vedant</a>
+                    <a href="#projects">→ Projects</a>
+                    <a href="#contact">→ Hire Vedant</a>
+                </div>
+            </div>
+            <div>
+                <h4>My Projects</h4>
+                <div class="footer-links">
+                    <a href="#"><i class="devicon-flutter-plain colored"></i>RideNGo</a>
+                    <a href="#"><i class="devicon-flutter-plain colored"></i>MediTracker</a>
+                    <a href="#"><i class="devicon-flutter-plain colored"></i>MEDIQO</a>
+                    <a href="#"><i class="devicon-flutter-plain colored"></i>GymManagement</a>
+                    <a href="#"><i class="devicon-html5-plain colored"></i>CineBook</a>
+                </div>
+            </div>
+            <div>
+                <h4>Tech Stack</h4>
+                <div class="footer-links">
+                    <a href="#"><i class="devicon-flutter-plain colored"></i>Flutter</a>
+                    <a href="#"><i class="devicon-dart-plain colored"></i>Dart</a>
+                    <a href="#"><i class="devicon-html5-plain colored"></i>HTML/CSS/JS</a>
+                    <a href="#"><i class="devicon-php-plain colored"></i>PHP &amp; MySQL</a>
+                    <a href="#"><img src="https://www.vectorlogo.zone/logos/java/java-icon.svg" style="width:14px;height:14px;" alt="">Java</a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>© 2025 <a href="#">Vedant</a>. Crafted with <i class="devicon-flutter-plain colored" style="font-size:0.9rem;"></i> &amp; ☕</p>
+            <div class="footer-bottom-links"><a href="#">Privacy</a><a href="#">Terms</a></div>
+        </div>
+    </div>
+</footer>
+
+<button class="scroll-top" id="scrollTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+
+<script>
+/* CURSOR */
+const cursor = document.getElementById('cursor');
+const cursorDot = document.getElementById('cursorDot');
+document.addEventListener('mousemove', e => {
+    cursor.style.left = e.clientX - 11 + 'px'; cursor.style.top = e.clientY - 11 + 'px';
+    cursorDot.style.left = e.clientX - 3 + 'px'; cursorDot.style.top = e.clientY - 3 + 'px';
+});
+document.querySelectorAll('a,button,.glass-card,.skill-orb,.project-card').forEach(el => {
+    el.addEventListener('mouseenter', () => { cursor.style.width='40px';cursor.style.height='40px';cursor.style.borderColor='var(--orange)';cursor.style.background='rgba(30,115,190,0.05)'; });
+    el.addEventListener('mouseleave', () => { cursor.style.width='22px';cursor.style.height='22px';cursor.style.borderColor='var(--bright-blue)';cursor.style.background='transparent'; });
+});
+
+/* NAVBAR */
+window.addEventListener('scroll', () => {
+    document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 50);
+    document.getElementById('scrollTop').classList.toggle('visible', window.scrollY > 500);
+});
+function toggleNav() { document.getElementById('navLinks').classList.toggle('open'); document.getElementById('hamburger').classList.toggle('active'); }
+function closeNav()  { document.getElementById('navLinks').classList.remove('open'); document.getElementById('hamburger').classList.remove('active'); }
+
+/* TYPEWRITER */
+const titles = ['Flutter Apps 📱','Web Platforms 🌐','Firebase-Powered Apps 🔥','Smart Mobility Solutions 🛵','Healthcare Apps 💊','Movie Booking Apps 🎬','Fitness Management Apps 💪','Scalable Digital Experiences 🚀'];
+let tIdx=0, cIdx=0, deleting=false;
+const typedEl = document.getElementById('typedText');
+function type() {
+    const cur = titles[tIdx];
+    typedEl.textContent = cur.substring(0, deleting ? --cIdx : ++cIdx);
+    let speed = deleting ? 35 : 70;
+    if (!deleting && cIdx === cur.length) { speed=2200; deleting=true; }
+    if (deleting && cIdx === 0) { deleting=false; tIdx=(tIdx+1)%titles.length; speed=350; }
+    setTimeout(type, speed);
+}
+type();
+
+/* COUNTERS */
+let countersStarted = false;
+function animateCounters() {
+    if (countersStarted) return; countersStarted = true;
+    document.querySelectorAll('.stat-number').forEach(counter => {
+        const target = +counter.dataset.count; let current = 0;
+        const tick = () => { current += target/55; if (current < target) { counter.textContent = Math.ceil(current) + '+'; requestAnimationFrame(tick); } else { counter.textContent = target + '+'; } };
+        tick();
+    });
+}
+
+/* SCROLL REVEAL */
+const revealObs = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+        if (!entry.isIntersecting) return;
+        entry.target.classList.add('visible');
+        entry.target.querySelectorAll('.skill-bar-fill,.progress-fill').forEach(bar => { bar.style.width = bar.dataset.width; });
+        if (entry.target.querySelector && entry.target.querySelector('.stat-number')) animateCounters();
+    });
+}, { threshold: 0.10, rootMargin: '0px 0px -40px 0px' });
+document.querySelectorAll('.reveal,.reveal-left,.reveal-right').forEach(el => revealObs.observe(el));
+
+const heroObs = new IntersectionObserver(e => { if (e[0].isIntersecting) animateCounters(); }, { threshold: 0.2 });
+const heroEl = document.querySelector('.hero');
+if (heroEl) heroObs.observe(heroEl);
+
+/* 3D TILT — ABOUT CARD */
+const card3d = document.getElementById('about3dCard');
+if (card3d) {
+    card3d.addEventListener('mousemove', e => {
+        const r = card3d.getBoundingClientRect();
+        card3d.style.transform = `perspective(800px) rotateX(${((e.clientY-r.top-r.height/2)/r.height*2)*-10}deg) rotateY(${((e.clientX-r.left-r.width/2)/r.width*2)*10}deg) scale(1.02)`;
+    });
+    card3d.addEventListener('mouseleave', () => { card3d.style.transition='transform 0.5s ease'; card3d.style.transform='perspective(800px) rotateX(0) rotateY(0) scale(1)'; });
+    card3d.addEventListener('mouseenter', () => { card3d.style.transition='transform 0.1s ease'; });
+}
+
+/* 3D TILT — SKILL ORBS */
+document.querySelectorAll('.skill-orb').forEach(orb => {
+    orb.addEventListener('mousemove', e => {
+        const r = orb.getBoundingClientRect();
+        orb.style.transform = `perspective(400px) rotateX(${((e.clientY-r.top-r.height/2)/r.height*2)*-14}deg) rotateY(${((e.clientX-r.left-r.width/2)/r.width*2)*14}deg) translateY(-5px)`;
+    });
+    orb.addEventListener('mouseleave', () => { orb.style.transition='transform 0.5s ease'; orb.style.transform=''; });
+    orb.addEventListener('mouseenter', () => { orb.style.transition='transform 0.1s ease'; });
+});
+
+/* 3D TILT — PROJECT CARDS */
+document.querySelectorAll('.project-card').forEach(card => {
+    card.addEventListener('mousemove', e => {
+        const r = card.getBoundingClientRect();
+        const x = e.clientX - r.left, y = e.clientY - r.top;
+        card.style.transform = `perspective(600px) rotateX(${((y-r.height/2)/r.height*2)*-5}deg) rotateY(${((x-r.width/2)/r.width*2)*5}deg) translateY(-6px)`;
+        card.style.boxShadow = `${(x-r.width/2)*0.04}px ${(y-r.height/2)*0.04}px 40px rgba(30,115,190,0.18)`;
+    });
+    card.addEventListener('mouseleave', () => { card.style.transition='all 0.5s ease'; card.style.transform=''; card.style.boxShadow=''; });
+    card.addEventListener('mouseenter', () => { card.style.transition='transform 0.1s ease, box-shadow 0.1s ease'; });
+});
+
+/* PROJECT FILTER */
+function filterProjects(category, btn) {
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    document.querySelectorAll('.project-card').forEach(card => {
+        const match = category === 'all' || card.dataset.category === category;
+        if (match) { card.style.display='grid'; setTimeout(() => { card.style.opacity='1'; card.style.transform=''; }, 10); }
+        else { card.style.opacity='0'; card.style.transform='translateY(18px) scale(0.96)'; setTimeout(() => { card.style.display='none'; }, 320); }
+    });
+}
+
+/* CONTACT FORM */
+function sendToGmail(event) {
+    event.preventDefault();
+    const name = document.querySelector('#contactForm input[type="text"]').value;
+    const email = document.querySelector('#contactForm input[type="email"]').value;
+    const project = document.querySelectorAll('#contactForm input[type="text"]')[1].value;
+    const message = document.querySelector('#contactForm textarea').value;
+    const subject = encodeURIComponent("New Project Inquiry from " + name);
+    const body = encodeURIComponent(
+        "Name: " + name + "\n" +
+        "Email: " + email + "\n" +
+        "Project Type: " + project + "\n\n" +
+        "Message:\n" + message
+    );
+    window.location.href = "mailto:vedantnagul@gmail.com?subject=" + subject + "&body=" + body;
+    const status = document.getElementById('formStatus');
+    status.classList.add('success');
+    setTimeout(() => status.classList.remove('success'), 5000);
+}
+
+/* ACTIVE NAV */
+const sections = document.querySelectorAll('section[id]');
+window.addEventListener('scroll', () => {
+    let current = '';
+    sections.forEach(s => { if (window.scrollY >= s.offsetTop - 160) current = s.id; });
+    document.querySelectorAll('.nav-links a:not(.nav-cta)').forEach(link => {
+        link.classList.toggle('active', link.getAttribute('href') === `#${current}`);
+    });
+});
+
+/* PARALLAX ORBS */
+window.addEventListener('scroll', () => {
+    const sy = window.scrollY;
+    document.querySelectorAll('.orb').forEach((orb, i) => { orb.style.transform = `translateY(${sy*(i+1)*0.018}px)`; });
+});
+</script>
+</body>
+</html>
